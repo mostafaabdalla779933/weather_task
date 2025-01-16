@@ -37,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation (project(":core"))
+    implementation(project(":core"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
@@ -58,8 +58,10 @@ dependencies {
     // Google Maps SDK for Android
     implementation(libs.places)
 
-    implementation (libs.hilt.android)
+    implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     kapt(libs.androidx.hilt.compiler)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.landscapist.glide)
 }

@@ -3,8 +3,11 @@ package com.example.current_weather
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.Resource
+import com.example.domain.entity.WeatherEntity
 import com.example.domain.usecase.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +18,9 @@ class CurrentWeatherVM @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
 ) :ViewModel(){
 
+    var loadingState = MutableStateFlow(false)
+    var weatherState = MutableStateFlow<WeatherEntity?>(null)
+    var error = MutableSharedFlow<String>()
 
     fun fetchWeather(city: String) {
         viewModelScope.launch {
@@ -23,30 +29,23 @@ class CurrentWeatherVM @Inject constructor(
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
-                            // Set State
-                            //   setState { copy(weatherState = MainContract.WeatherState.Loading) }
+                            loadingState.value = true
                         }
 
                         is Resource.Empty -> {
-                            // Set State
-                            //  setState { copy(weatherState = MainContract.WeatherState.Idle) }
+                            loadingState.value = false
+                            error.emit("Empty response")
                         }
 
                         is Resource.Success -> {
-                            // Set State
-//                            val weatherList = weatherMapper.fromList(listOf(it.data))
-//                            setState {
-//                                copy(
-//                                    weatherState = MainContract.WeatherState.Success(
-//                                        weatherList = weatherList
-//                                    )
-//                                )
-//                            }
+                            loadingState.value = false
+                            weatherState.value = it.data
+
                         }
 
                         is Resource.Error -> {
-                            // Set Effect
-//                            setEffect { MainContract.Effect.ShowError(message = it.exception.message) }
+                            loadingState.value = false
+                            error.emit(it.exception.localizedMessage ?: "Something went wrong")
                         }
                     }
                 }
