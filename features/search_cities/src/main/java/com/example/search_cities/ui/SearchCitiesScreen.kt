@@ -21,11 +21,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.core.Screens
+import com.example.core.getCityName
+import com.example.core.showToast
 
 
 @Composable
@@ -34,6 +37,7 @@ fun SearchCitiesScreen(
     viewModel: SearchCitiesVM = hiltViewModel()
 ) {
     var query by remember { mutableStateOf(TextFieldValue()) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -83,14 +87,17 @@ fun SearchCitiesScreen(
                                 text = suggestion,
                                 selection = TextRange(suggestion.length)
                             )
-                            navHostController.navigate(
-                                Screens.CurrentWeather.createRoute(
-                                    suggestion.replace(
-                                        " ",
-                                        ""
+                            suggestion.getCityName(context)?.let { city ->
+                                viewModel.clearSuggestions()
+                                navHostController.navigate(
+                                    Screens.CurrentWeather.createRoute(
+                                        city.replace(" ","")
                                     )
                                 )
-                            )
+                            } ?: run {
+                                context.showToast("check connection")
+                            }
+
                         }
                     }
                 }

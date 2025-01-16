@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.core.Screens
 import com.example.core.getIconUrl
 import com.example.core.showToast
 import com.example.domain.entity.WeatherEntity
@@ -65,13 +66,13 @@ fun CurrentWeatherScreen(
             CircularProgressIndicator()
         }
     } else {
-        weather?.let { WeatherDetails(it) }
+        weather?.let { WeatherDetails(navHostController,city,it) }
     }
 }
 
 
 @Composable
-fun WeatherDetails(weather: WeatherEntity) {
+fun WeatherDetails(navHostController: NavHostController,city: String,weather: WeatherEntity) {
     Column(
         modifier = Modifier
             .background(Color(0xFF0080F9))
@@ -109,6 +110,11 @@ fun WeatherDetails(weather: WeatherEntity) {
             modifier = Modifier
                 .padding(vertical = 15.dp)
                 .align(Alignment.CenterHorizontally), onClick = {
+                navHostController.navigate(
+                    Screens.ForecastWeather.createRoute(
+                        city
+                    )
+                )
 
             }, colors = ButtonColors(
                 containerColor = Color(0xFFFF4475),
@@ -117,14 +123,7 @@ fun WeatherDetails(weather: WeatherEntity) {
                 disabledContentColor = Color.White,
             )
         ) {
-            Text(text = "back")
+            Text(text = "show forecast")
         }
     }
-}
-
-
-@Preview
-@Composable
-fun Preview() {
-    WeatherDetails(WeatherEntity(0, "cairo", "", 0.0, "", 0.0, 0.0, 0.0, 0, 0, 0.0, 0L, 0L, 0))
 }

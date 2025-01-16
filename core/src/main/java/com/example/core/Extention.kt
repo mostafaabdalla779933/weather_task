@@ -2,7 +2,11 @@ package com.example.core
 
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 fun String.getCityName(context: Context): String? {
     return try {
@@ -31,3 +35,10 @@ fun Context.showToast(message:String){
 
 
 fun getIconUrl(icon: String): String = "https://openweathermap.org/img/w/${icon}.png"
+
+
+fun Long.convertMillisToDate(): String {
+    val formatter = SimpleDateFormat("EEEE, MMM d", Locale.ENGLISH)
+    val date = Date(this)
+    return formatter.format(date)
+}

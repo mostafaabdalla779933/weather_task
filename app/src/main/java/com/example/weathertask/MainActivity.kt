@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.core.Screens
 import com.example.current_weather.CurrentWeatherScreen
+import com.example.forecast.ForecastScreen
 import com.example.search_cities.ui.SearchCitiesScreen
 import com.example.weathertask.ui.theme.WeatherTaskTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +56,13 @@ fun NavigationGraph(navController: NavHostController) {
             arguments = listOf(navArgument("city") { type = NavType.StringType })
         ) { backStackEntry ->
             CurrentWeatherScreen(navController, backStackEntry.arguments?.getString("city") ?: "")
+        }
+
+        composable(
+            route = Screens.ForecastWeather.screenRoute,
+            arguments = listOf(navArgument("city") { type = NavType.StringType })
+        ) { backStackEntry ->
+            ForecastScreen(navController, backStackEntry.arguments?.getString("city") ?: "")
         }
 
     }

@@ -20,6 +20,7 @@ class CurrentWeatherVM @Inject constructor(
 
     var loadingState = MutableStateFlow(false)
     var weatherState = MutableStateFlow<WeatherEntity?>(null)
+
     var error = MutableSharedFlow<String>()
 
     fun fetchWeather(city: String) {
@@ -30,11 +31,6 @@ class CurrentWeatherVM @Inject constructor(
                     when (it) {
                         is Resource.Loading -> {
                             loadingState.value = true
-                        }
-
-                        is Resource.Empty -> {
-                            loadingState.value = false
-                            error.emit("Empty response")
                         }
 
                         is Resource.Success -> {

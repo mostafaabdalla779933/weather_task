@@ -2,8 +2,10 @@ package com.example.data.data.repository
 
 import com.example.core.Mapper
 import com.example.core.Resource
+import com.example.data.data.model.ForecastDTO
 import com.example.data.model.WeatherDTO
 import com.example.data.remote.source.RemoteDataSource
+import com.example.domain.entity.ForecastEntity
 import com.example.domain.entity.WeatherEntity
 import com.example.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +19,7 @@ class RepositoryImp @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val weatherMapper : Mapper<WeatherDTO, WeatherEntity>,
+    private val forecastMapper : Mapper<ForecastDTO, ForecastEntity>
 ) : Repository {
 
 
@@ -45,6 +48,17 @@ class RepositoryImp @Inject constructor(
                     emit(Resource.Error(ex1))
                 }
             }
+        }
+    }
+
+    override suspend fun getForecast(city: String): Flow<Resource<ForecastEntity>> {
+        return flow {
+            val data = remoteDataSource.getForecast(city)
+                if(data.code == "200"){
+                    emit(Resource.Success(forecastMapper.from(data)))
+                }else {
+                    emit(Resource.Error(Exception(data.message)))
+                }
         }
     }
 }
