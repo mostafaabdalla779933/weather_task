@@ -1,12 +1,15 @@
 package com.example.weathertask.di
 
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.data.BuildConfig
 import com.example.data.remote.api.ApiService
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -42,13 +45,18 @@ object NetworkModule {
      * Provides [OkHttpClient] instance
      */
     @Provides
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) : OkHttpClient {
+    fun provideOkHttpClient(@ApplicationContext context: Context, httpLoggingInterceptor: HttpLoggingInterceptor) : OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .retryOnConnectionFailure(true)
+            .apply {
+                if(BuildConfig.DEBUG){
+                    addInterceptor(ChuckerInterceptor.Builder(context).build())
+                }
+            }
             .build()
     }
 

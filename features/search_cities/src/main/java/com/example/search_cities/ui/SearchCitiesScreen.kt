@@ -1,4 +1,4 @@
-package com.example.search_cities
+package com.example.search_cities.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,10 +24,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.core.Screens
 
 
 @Composable
-fun SearchCitiesScreen(viewModel: SearchCitiesVM = hiltViewModel()) {
+fun SearchCitiesScreen(
+    navHostController: NavHostController,
+    viewModel: SearchCitiesVM = hiltViewModel()
+) {
     var query by remember { mutableStateOf(TextFieldValue()) }
 
     Column(
@@ -50,11 +55,13 @@ fun SearchCitiesScreen(viewModel: SearchCitiesVM = hiltViewModel()) {
                 }
             },
             maxLines = 1,
-            label = { Text("Search for a place") }
+            label = { Text(text = "Search for a place", color = Color.DarkGray) }
         )
-        Box(modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxHeight(.5f)) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxHeight(.5f)
+        ) {
             Card(
                 modifier = Modifier
                     .background(Color.White)
@@ -70,14 +77,20 @@ fun SearchCitiesScreen(viewModel: SearchCitiesVM = hiltViewModel()) {
                         .padding(paddingValues = PaddingValues(horizontal = 16.dp))
 
                 ) {
-                    items(viewModel.suggestionsState) { suggestion:String ->
+                    items(viewModel.suggestionsState) { suggestion: String ->
                         CityItem(suggestion) {
-                            query =
-                                query.copy(
-                                    text = suggestion,
-                                    selection = TextRange(suggestion.length)
+                            query = query.copy(
+                                text = suggestion,
+                                selection = TextRange(suggestion.length)
+                            )
+                            navHostController.navigate(
+                                Screens.CurrentWeather.createRoute(
+                                    suggestion.replace(
+                                        " ",
+                                        ""
+                                    )
                                 )
-                            viewModel.clearSuggestions()
+                            )
                         }
                     }
                 }

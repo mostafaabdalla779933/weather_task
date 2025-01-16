@@ -3,9 +3,9 @@ package com.example.data.data.repository
 import com.example.core.Mapper
 import com.example.core.Resource
 import com.example.data.model.WeatherDTO
+import com.example.data.remote.source.RemoteDataSource
 import com.example.domain.entity.WeatherEntity
 import com.example.domain.repository.Repository
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -13,7 +13,6 @@ import javax.inject.Inject
 /**
  * Implementation class of [Repository]
  */
-@ViewModelScoped
 class RepositoryImp @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,

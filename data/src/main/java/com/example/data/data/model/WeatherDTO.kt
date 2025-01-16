@@ -17,7 +17,6 @@ data class WeatherDTO(
     val sunrise: Long,
     val sunset: Long,
     val dt: Long
-
 )
 
 

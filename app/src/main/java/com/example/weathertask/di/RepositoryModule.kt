@@ -1,9 +1,11 @@
 package com.example.weathertask.di
 
 import com.example.data.data.repository.LocalDataSource
+import com.example.data.data.repository.RepositoryImp
 import com.example.data.remote.source.RemoteDataSource
 import com.example.data.remote.source.RemoteDataSourceImp
 import com.example.data.local.source.LocalDataSourceImp
+import com.example.domain.repository.Repository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,5 +23,8 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun provideRemoteDataSource(remoteDataSourceImp: RemoteDataSourceImp): RemoteDataSource
+
+    @Binds
+    abstract fun provideRepository(repository : RepositoryImp) : Repository
 
 }

@@ -17,4 +17,12 @@ interface ApiService {
         @Query("units") units : String  = "metric",
     ) : WeatherResponseNetwork
 
+
+    @GET("forecast/daily")
+    suspend fun getForecast(
+        @Query("q") city : String,
+        @Query("appid") apiKey : String  = BuildConfig.API_KEY,
+        @Query("units") units : String  = "metric",
+    ) : WeatherResponseNetwork
+
 }
