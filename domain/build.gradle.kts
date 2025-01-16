@@ -50,4 +50,21 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    //
+
+    // Test
+    testImplementation (libs.junit.v4131)
+    // testImplementation for pure JVM unit tests
+    testImplementation (libs.kotlinx.coroutines.test)
+    // Run Blocking Test
+    testImplementation (libs.androidx.core.testing)
+    // Truth
+    testImplementation (libs.truth)
+    // For small test - large test annotations
+    testImplementation (libs.androidx.runner)
+    // Mock objects
+    testImplementation (libs.mockk)
+    // For Flow test
+    testImplementation (libs.turbine)
 }

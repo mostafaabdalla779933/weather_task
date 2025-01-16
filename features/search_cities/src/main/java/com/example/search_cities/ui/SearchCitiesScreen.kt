@@ -20,9 +20,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -59,7 +62,14 @@ fun SearchCitiesScreen(
                 }
             },
             maxLines = 1,
-            label = { Text(text = "Search for a place", color = Color.DarkGray) }
+            label = { Text(text = "Search for a place", color = Color.DarkGray) },
+            textStyle = TextStyle(color = Color.Black),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.LightGray,
+                unfocusedContainerColor = Color.LightGray,
+                disabledContainerColor = Color.LightGray,
+                errorContainerColor = Color.LightGray
+            )
         )
         Box(
             modifier = Modifier
@@ -91,7 +101,7 @@ fun SearchCitiesScreen(
                                 viewModel.clearSuggestions()
                                 navHostController.navigate(
                                     Screens.CurrentWeather.createRoute(
-                                        city.replace(" ","")
+                                        city.replace(" ", "")
                                     )
                                 )
                             } ?: run {

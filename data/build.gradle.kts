@@ -78,4 +78,21 @@ dependencies {
     api(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     api(libs.androidx.room.ktx)
+
+    //
+
+    // Test
+    testImplementation (libs.junit.v4131)
+    // testImplementation for pure JVM unit tests
+    testImplementation (libs.kotlinx.coroutines.test)
+    // Run Blocking Test
+    testImplementation (libs.androidx.core.testing)
+    // Truth
+    testImplementation (libs.truth)
+    // For small test - large test annotations
+    testImplementation (libs.androidx.runner)
+    // Mock objects
+    testImplementation (libs.mockk)
+    // For Flow test
+    testImplementation (libs.turbine)
 }
