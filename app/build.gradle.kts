@@ -10,6 +10,15 @@ android {
     namespace = "com.example.weathertask"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("/Weather123.jks")
+            storePassword = "Weather123"
+            keyAlias = "Weather123"
+            keyPassword = "Weather123"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.weathertask"
         minSdk = 24
@@ -22,11 +31,21 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            applicationVariants.all { variant ->
+               variant.outputs.forEach { output ->
+                    if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                        output.outputFileName = "weather_app.apk"
+                    }
+                }
+                return@release
+            }
         }
     }
     compileOptions {
